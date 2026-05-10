@@ -63,6 +63,21 @@ function download(filename: string, content: string, type: string) {
   URL.revokeObjectURL(url)
 }
 
+function readJsonFile(file: File): Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        resolve(JSON.parse(String(reader.result || '')))
+      } catch (error) {
+        reject(error)
+      }
+    }
+    reader.onerror = reject
+    reader.readAsText(file)
+  })
+}
+
 function App() {
   const [data, setData] = useState<CollectionData>(() => loadData())
   const [form, setForm] = useState({ contributorName: '', amount: 5, date: today(), paymentMethod: 'contanti' as PaymentMethod, notes: '' })
@@ -133,6 +148,29 @@ function App() {
     setData(emptyData)
   }
 
+  async function importVoucherSeed(file: File) {
+    try {
+      const payload = await readJsonFile(file) as Partial<CollectionData> & { type?: string }
+      if (payload.type !== 'civita-young-voucher-seed') {
+        alert('Questo non sembra un file dati buono creato dal programma madre.')
+        return
+      }
+      const hasContributions = data.contributions.length > 0
+      if (hasContributions && !confirm('Hai gia partecipanti inseriti. Vuoi cambiare i dati del buono mantenendo la lista attuale?')) return
+      setData((current) => ({
+        ...current,
+        voucherCode: payload.voucherCode || current.voucherCode,
+        beneficiaryName: payload.beneficiaryName || current.beneficiaryName,
+        occasion: payload.occasion || current.occasion,
+        title: payload.title || current.title,
+        issueDate: payload.issueDate || current.issueDate,
+        notes: payload.notes || current.notes,
+      }))
+    } catch {
+      alert('File dati buono non valido.')
+    }
+  }
+
   return (
     <div className="app-shell">
       <header className="sticky top-0 z-20 border-b border-white/70 bg-white/90 backdrop-blur">
@@ -141,6 +179,7 @@ function App() {
           <div>
             <h1 className="text-lg font-black text-night">Civita Young</h1>
             <p className="text-xs font-bold text-slate-500">Colletta buono compleanno</p>
+            <p className="text-[11px] font-black text-teal-700">Versione 2 - import dati buono</p>
           </div>
         </div>
       </header>
@@ -148,6 +187,19 @@ function App() {
       <main className="page space-y-4">
         <section className="card space-y-3">
           <h2 className="text-xl font-black text-night">Dati del buono</h2>
+          <label className="btn-secondary w-full cursor-pointer">
+            Importa dati buono dal responsabile
+            <input
+              className="hidden"
+              type="file"
+              accept="application/json,.json"
+              onChange={(event) => {
+                const file = event.target.files?.[0]
+                if (file) importVoucherSeed(file)
+                event.currentTarget.value = ''
+              }}
+            />
+          </label>
           <Field label="Codice buono"><input placeholder="Es. CY-2026-001" value={data.voucherCode} onChange={(e) => updateInfo('voucherCode', e.target.value.toUpperCase())} /></Field>
           <Field label="Beneficiario"><input placeholder="Nome e cognome" value={data.beneficiaryName} onChange={(e) => updateInfo('beneficiaryName', e.target.value)} /></Field>
           <div className="grid grid-cols-2 gap-2">
