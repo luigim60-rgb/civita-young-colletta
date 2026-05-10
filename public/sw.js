@@ -1,4 +1,4 @@
-const CACHE = 'cy-colletta-v3'
+const CACHE = 'cy-colletta-v4'
 const ASSETS = ['./', './index.html', './manifest.json', './civita-young-logo.png']
 
 self.addEventListener('install', (event) => {
