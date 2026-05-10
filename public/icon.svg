@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#071525"/>
+  <circle cx="256" cy="238" r="146" fill="#14b8a6"/>
+  <path d="M156 274c54 78 146 78 200 0" fill="none" stroke="#f6d88b" stroke-width="34" stroke-linecap="round"/>
+  <path d="M178 186h156c32 0 58 26 58 58v16H120v-16c0-32 26-58 58-58Z" fill="#fff"/>
+  <text x="256" y="356" text-anchor="middle" font-family="Arial,sans-serif" font-size="66" font-weight="900" fill="#071525">CY</text>
+</svg>
