@@ -1,5 +1,5 @@
-const CACHE = 'cy-colletta-v2'
-const ASSETS = ['./', './index.html', './manifest.json', './icon.svg']
+const CACHE = 'cy-colletta-v3'
+const ASSETS = ['./', './index.html', './manifest.json', './civita-young-logo.png']
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)))
