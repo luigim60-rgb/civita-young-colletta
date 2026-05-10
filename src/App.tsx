@@ -175,7 +175,11 @@ function App() {
     <div className="app-shell">
       <header className="sticky top-0 z-20 border-b border-white/70 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-night font-black text-gold">CY</div>
+          <img
+            className="h-12 w-12 rounded-2xl object-cover shadow-md"
+            src="./civita-young-logo.png"
+            alt="Logo Civita Young"
+          />
           <div>
             <h1 className="text-lg font-black text-night">Civita Young</h1>
             <p className="text-xs font-bold text-slate-500">Colletta buono compleanno</p>
